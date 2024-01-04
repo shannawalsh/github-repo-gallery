@@ -5,6 +5,7 @@ const repoList = document.querySelector(".repo-list");
 
 const username = "shannawalsh";
 
+//pull basic user data from profile
 const gitUserProfile = async function () {
     const userInfo = await fetch(`https://api.github.com/users/${username}`);
     const data = await userInfo.json();
@@ -14,6 +15,7 @@ const gitUserProfile = async function () {
 };
 gitUserProfile();
 
+//create elements to display the profile data
 const displayUser = function (data) {
    const div = document.createElement("div");
    div.classList.add("user-info");
@@ -32,12 +34,14 @@ const displayUser = function (data) {
     gitUserRepos();
 };
 
+//pull user repo and repo data
 const gitUserRepos = async function () {
     const fetchRepos = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
     const repoData = await fetchRepos.json();
     repoInfo(repoData);
 };
 
+//create elements and display repos
 const repoInfo = function (repos) {
     for (const repo of repos) {
     const repoItem = document.createElement("li");
