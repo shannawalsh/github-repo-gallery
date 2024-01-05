@@ -2,6 +2,10 @@
 const overview = document.querySelector(".overview");
 //select the unordered list to display the repos list
 const repoList = document.querySelector(".repo-list");
+//select section where the repo info appears
+const repoDetails = document.querySelector(".repos");
+//select section where repo data will appear
+const repoData = document.querySelector(".repo-data");
 
 const username = "shannawalsh";
 
@@ -50,3 +54,48 @@ const repoInfo = function (repos) {
     repoList.append(repoItem);
     }
 };
+
+//add event listener for clicking on the repo name
+repoList.addEventListener("click", function (e){
+    if (e.target.matches("h3")) {
+        const repoName = e.target.innerText;
+        getRepoInfo(repoName);
+    }
+});
+
+//pull specific repo info
+const getRepoInfo = async function (repoName) {
+    const fetchInfo = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
+    const repoInfo = await fetchInfo.json();
+    console.log(repoInfo);
+
+    //fetch languages
+    const fetchLanguages = await fetch(repoInfo.languages_url);
+    const languageData = await fetchLanguages.json();
+    //console.log(languageData);
+    
+    //create list of languages
+    const languages = [];
+    for (const language in languageData) {
+        languages.push(language);
+    }
+    //console.log(languages);
+    displayRepoInfo(repoInfo, languages);
+
+    };
+
+    const displayRepoInfo = function(repoInfo, languages) {
+        repoData.innerHTML = "";
+        repoData.classList.remove("hide");
+        repoDetails.classList.add("hide");
+        const div = document.createElement("div");
+        div.innerHTML = `
+        <h3>Name: ${repoInfo.name}</h3>
+            <p>Description: ${repoInfo.description}</p>
+            <p>Default Branch: ${repoInfo.default_branch}</p>
+            <p>Languages: ${languages.join(", ")}</p>
+            <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>
+    `;
+        repoData.append(div);
+    }
+
