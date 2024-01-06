@@ -6,6 +6,10 @@ const repoList = document.querySelector(".repo-list");
 const repoDetails = document.querySelector(".repos");
 //select section where repo data will appear
 const repoData = document.querySelector(".repo-data");
+//select back to gallery button
+const backButton = document.querySelector(".view-repos");
+//select the search by name placeholder
+const filterInput = document.querySelector(".filter-repos");
 
 const username = "shannawalsh";
 
@@ -49,6 +53,7 @@ const gitUserRepos = async function () {
 const repoInfo = function (repos) {
     for (const repo of repos) {
     const repoItem = document.createElement("li");
+    filterInput.classList.remove("hide");
     repoItem.classList.add("repo");
     repoItem.innerHTML = `<h3>${repo.name}</h3>`;
     repoList.append(repoItem);
@@ -84,18 +89,39 @@ const getRepoInfo = async function (repoName) {
 
     };
 
-    const displayRepoInfo = function(repoInfo, languages) {
-        repoData.innerHTML = "";
-        repoData.classList.remove("hide");
-        repoDetails.classList.add("hide");
-        const div = document.createElement("div");
-        div.innerHTML = `
-        <h3>Name: ${repoInfo.name}</h3>
-            <p>Description: ${repoInfo.description}</p>
-            <p>Default Branch: ${repoInfo.default_branch}</p>
-            <p>Languages: ${languages.join(", ")}</p>
-            <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>
+const displayRepoInfo = function(repoInfo, languages) {
+    repoData.innerHTML = "";
+    repoData.classList.remove("hide");
+    repoDetails.classList.add("hide");
+    backButton.classList.remove("hide");
+    const div = document.createElement("div");
+    div.innerHTML = `
+       <h3>Name: ${repoInfo.name}</h3>
+          <p>Description: ${repoInfo.description}</p>
+          <p>Default Branch: ${repoInfo.default_branch}</p>
+          <p>Languages: ${languages.join(", ")}</p>
+          <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>
     `;
-        repoData.append(div);
-    }
+    repoData.append(div);
+   }
+backButton.addEventListener("click", function(){
+    repoDetails.classList.remove("hide");
+    repoData.classList.add("hide");
+    backButton.classList.add("hide");
+});
 
+filterInput.addEventListener("input", function (e){
+    const searchText = e.target.value
+    //console.log(searchText); 
+    const repos = document.querySelectorAll(".repo");
+    const lowerSearchText = searchText.toLowerCase();
+    
+    for (const repo of repos) {
+        const lowerRepoText = repo.innerText.toLowerCase();
+        if (lowerRepoText.includes(lowerSearchText)) {
+            repo.classList.remove("hide");
+        } else {
+            repo.classList.add("hide");
+        }
+    }
+});
