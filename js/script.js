@@ -103,6 +103,16 @@ const displayRepoInfo = function(repoInfo, languages) {
           <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>
     `;
     repoData.append(div);
+    
+    //adding logic to show GitHub pages button if the repo has a GitHub hosted page
+    if (repoInfo.has_pages === true) {
+        const displayPagesButton = document.createElement("a");
+        displayPagesButton.innerHTML = `
+        <a class="visit" href="https://${username}.github.io/${repoInfo.name}" target="_blank" rel="noreferrer noopener">GitHub Hosted Page!</a>
+        `;
+    div.append(displayPagesButton);
+    };
+
    }
 backButton.addEventListener("click", function(){
     repoDetails.classList.remove("hide");
