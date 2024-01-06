@@ -105,7 +105,8 @@ const displayRepoInfo = function(repoInfo, languages) {
           
     `;
     repoData.append(div);
-
+    
+    //adding logic to show GitHub pages button if the repo has a GitHub hosted page
     if (repoInfo.has_pages === true) {
         const displayPagesButton = document.createElement("a");
         displayPagesButton.innerHTML = `
