@@ -17,7 +17,6 @@ const username = "shannawalsh";
 const gitUserProfile = async function () {
     const userInfo = await fetch(`https://api.github.com/users/${username}`);
     const data = await userInfo.json();
-    //console.log(data);
 
     displayUser(data);
 };
@@ -72,19 +71,16 @@ repoList.addEventListener("click", function (e){
 const getRepoInfo = async function (repoName) {
     const fetchInfo = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
     const repoInfo = await fetchInfo.json();
-    console.log(repoInfo);
 
     //fetch languages
     const fetchLanguages = await fetch(repoInfo.languages_url);
     const languageData = await fetchLanguages.json();
-    //console.log(languageData);
     
     //create list of languages
     const languages = [];
     for (const language in languageData) {
         languages.push(language);
     }
-    //console.log(languages);
     displayRepoInfo(repoInfo, languages);
 
     };
@@ -124,7 +120,7 @@ backButton.addEventListener("click", function(){
 
 filterInput.addEventListener("input", function (e){
     const searchText = e.target.value
-    //console.log(searchText); 
+     
     const repos = document.querySelectorAll(".repo");
     const lowerSearchText = searchText.toLowerCase();
     
